@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const { inView: bannerInView, ref: bannerInViewRef } = useInView({ threshold: 0.5 });
+  const { inView: aboutMeInView, ref: aboutMeInViewRef } = useInView({ threshold: 0.5 });
   const { inView: projectInView, ref: projectInViewRef } = useInView({ threshold: 0.5 });
   const { inView: contactInView, ref: contactInViewRef } = useInView({ threshold: 0.5 });
 
@@ -27,6 +28,18 @@ export default function App() {
       window.removeEventListener("scroll", scrollHandler);
     };
   }, [bannerInView]);
+
+  useEffect(() => {
+    const scrollHandler = () => {
+      if (aboutMeInView) {
+        console.log("User scrolled/navigated to AboutMeSection");
+      }
+    };
+    window.addEventListener("scroll", scrollHandler);
+    return () => {
+      window.removeEventListener("scroll", scrollHandler);
+    };
+  }, [aboutMeInView]);
 
   useEffect(() => {
     const scrollHandler = () => {
@@ -58,7 +71,9 @@ export default function App() {
       <motion.div ref={bannerInViewRef} initial="hidden" animate={bannerInView ? "visible" : "hidden"} variants={animationVariants}>
         <BannerSection />
       </motion.div>
-      <AboutMeSection />
+      <motion.div ref={aboutMeInViewRef} initial="hidden" animate={aboutMeInView ? "visible" : "hidden"} variants={animationVariants}>
+        <AboutMeSection />
+      </motion.div>
       <motion.div ref={projectInViewRef} initial="hidden" animate={projectInView ? "visible" : "hidden"} variants={animationVariants}>
         <ProjectSection />
       </motion.div>
